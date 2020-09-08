@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jung_bahadur_rana/storyBoard.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -6,26 +7,22 @@ void main() {
     home: Junga(),
   ));
 }
-class Junga extends StatefulWidget {
 
+class Junga extends StatefulWidget {
   @override
   _JungaState createState() => _JungaState();
 }
 
+StoryBoard _storyBoard = StoryBoard();
+
 class _JungaState extends State<Junga> {
-  List<String>questions = [
-    'Did Junga Dai Kill Everybody ??',
-    'Is Junga Dai Good or Bad ??',
-    'Was he a dictator.?',
-    'Has Junga Dai Done Good things in his life ??',
-    'Had he had crush on QUEEN ?'
-  ];
-
-  List<bool>answers = [
-    true, false, true, true, false
-  ];
-
-  int questionNumbers = 0;
+  bool checkChoice2isempty() {
+    if (_storyBoard.getChoice2() == '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +32,6 @@ class _JungaState extends State<Junga> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-
           Expanded(
             flex: 7,
             child: Column(
@@ -43,47 +39,57 @@ class _JungaState extends State<Junga> {
                 Expanded(
                   child: Image(
                     fit: BoxFit.cover,
-                    image: AssetImage('images/image0.jpg'),
+                    image: AssetImage(_storyBoard.backgroundImage()),
                   ),
                 ),
-                 Text(questions[questionNumbers], style: TextStyle(color: Colors.black , fontSize: 20, fontWeight: FontWeight.w400),),
-
+                Text(
+                  _storyBoard.getTitle(),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400),
+                ),
                 Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10.0),
                   child: RaisedButton(
-                    color: Colors.green,
-                    highlightColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    color: Colors.white,
+                    highlightColor: Colors.grey,
                     splashColor: Colors.blue,
-                    onPressed: (){
-
+                    child: Text(
+                      _storyBoard.getChoice1(),
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    onPressed: () {
                       setState(() {
-                        if(answers[questionNumbers]==true ){
-
-                        }
-                        questionNumbers++;
+                        _storyBoard.selectedChoice(1);
                       });
-
                     },
-                  child: Text('True', style: TextStyle(fontSize: 18),),
-                ),
                   ),
-
-                  Container(
+                ),
+                Visibility(
+                  visible: checkChoice2isempty(),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.0),
                     child: RaisedButton(
-                      color: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      color: Colors.white,
                       highlightColor: Colors.red,
                       splashColor: Colors.blue,
-                      onPressed: (){
-
+                      child: Text(
+                        _storyBoard.getChoice2(),
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      onPressed: () {
                         setState(() {
-                          if(answers[questionNumbers]==false ){
-
-                          }
-                          questionNumbers++;
+                          _storyBoard.selectedChoice(2);
                         });
-
                       },
-
-                      child: Text('False', style: TextStyle(fontSize: 18),),
+                    ),
                   ),
                 ),
               ],
@@ -94,5 +100,3 @@ class _JungaState extends State<Junga> {
     );
   }
 }
-
-
